@@ -1,21 +1,6 @@
 name: Auto Sign
 
 on:
-  schedule:
-    - cron: '0 13 * * 5'  # Fri 15:00 (UTC+2)
-    - cron: '0 14 * * 5'  # Fri 15:00 (UTC+1)
-    - cron: '0 6 * * 5'  # Fri 08:00 (UTC+2)
-    - cron: '0 7 * * 5'  # Fri 08:00 (UTC+1)
-    - cron: '15 12 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 14:15 (UTC+2)
-    - cron: '15 13 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 14:15 (UTC+1)
-    - cron: '30 11 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 13:30 (UTC+2)
-    - cron: '30 12 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 13:30 (UTC+1)
-    - cron: '30 15 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 17:30 (UTC+2)
-    - cron: '30 16 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 17:30 (UTC+1)
-    - cron: '30 6 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 08:30 (UTC+2)
-    - cron: '30 7 * * 1,2,3,4'  # Mon-Tue-Wed-Thu 08:30 (UTC+1)
-    - cron: '7,22,37,52 7-18 * * 1,2,3,4,5'  # catch-up every 15m (UTC+1)
-    - cron: '7,22,37,52 6-17 * * 1,2,3,4,5'  # catch-up every 15m (UTC+2)
   workflow_dispatch:
 
 
@@ -40,11 +25,7 @@ jobs:
 
       - name: Sign
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            ./woffux sign --catch-up '1:08:30:in;1:13:30:out;1:14:15:in;1:17:30:out;2:08:30:in;2:13:30:out;2:14:15:in;2:17:30:out;3:08:30:in;3:13:30:out;3:14:15:in;3:17:30:out;4:08:30:in;4:13:30:out;4:14:15:in;4:17:30:out;5:08:00:in;5:15:00:out' --catch-up-timezone 'Europe/Madrid' --catch-up-window '2h'
-          else
-            ./woffux sign
-          fi
+          ./woffux sign
         env:
           WOFFU_URL: ${{ secrets.WOFFU_URL }}
           WOFFU_COMPANY_URL: ${{ secrets.WOFFU_COMPANY_URL }}
